@@ -10,15 +10,34 @@ function App() {
 
   return (
     <div className="app">
+      <div className="atmosphere" aria-hidden="true">
+        <span className="moon" />
+        <span className="star star-one" />
+        <span className="star star-two" />
+        <span className="star star-three" />
+        <span className="wisteria wisteria-left" />
+        <span className="wisteria wisteria-right" />
+      </div>
       <GameHeader score = {score} moves = {moves} resetGame={newGame}/>
 
       {isGameComplete && <WinMessage score = {score} moves = {moves} />}
 
-      <div className="cards-grid">
+      <main className="game-board">
+        <div className="board-heading">
+          <p className="eyebrow">A little moment of focus</p>
+          <h2>Find every matching pair</h2>
+          <p>Turn over two cards at a time and let your memory lead the way.</p>
+        </div>
+        <div className="cards-grid" aria-label="Memory cards">
         {cards.map((card) => (
-          <Card card = {card} onClick={handleCardClick}/>
+          <Card key={card.id} card = {card} onClick={handleCardClick}/>
         ))}
-      </div>
+        </div>
+      </main>
+      <footer className="game-footer">
+        <span className="footer-dot" aria-hidden="true" />
+        Take your time · enjoy the quiet
+      </footer>
     </div>
   )
 }

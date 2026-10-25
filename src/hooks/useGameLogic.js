@@ -1,45 +1,38 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
+
+const shuffleArray = (arr) => {
+    const shuffled = [...arr];
+    for(let i = shuffled.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+const createCards = (cardValues) => shuffleArray(cardValues).map((values, index) => ({
+    id: index,
+    values,
+    isFlipped: false,
+    isMatched: false
+}));
 
 export const useGameLogic = (cardValues) => {
 
-    const [cards, setCards] = useState([]);
+    const [cards, setCards] = useState(() => createCards(cardValues));
     const [flippedCards, setFlippedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
     const [score, setScore] = useState(0);
     const [moves, setMoves] = useState(0);
     const [isLocked, setIsLocked] = useState(false);
 
-    const shuffleArray = (arr) => {
-        const shuffled = [...arr];
-        for(let i = shuffled.length - 1; i > 0; i--){
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        return shuffled;
-    }
-
     const newGame = () => {
-
-        const shuffled = shuffleArray(cardValues);
-
-        const finalCards = shuffled.map((values, index) => ({
-        id : index, 
-        values, 
-        isFlipped : false, 
-        isMatched : false
-        }));
-
-        setCards(finalCards);
+        setCards(createCards(cardValues));
         setFlippedCards([]);
         setMatchedCards([]);
         setScore(0);
         setMoves(0);
         setIsLocked(false);
     }
-
-    useEffect(() => {
-        newGame();
-    }, [])
 
     const handleCardClick = (card) => {
         if(card.isFlipped || card.isMatched || isLocked || flippedCards.length == 2){
